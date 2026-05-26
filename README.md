@@ -1,70 +1,74 @@
-# Volleyball AI Coach — RAG-based Intelligent Training Support System
+# Volleyball AI Coach — интеллектуальная система поддержки тренировок на основе RAG
 
-An intelligent system that combines **Large Language Models (LLM)**, **sports analytics**, and **Retrieval-Augmented Generation (RAG)** to assist volleyball coaches and players.  
-It answers questions about techniques, tactics, and drills using a curated knowledge base, and provides performance analytics from match logs.
+Интеллектуальная система, объединяющая **большие языковые модели (LLM)**, **спортивную аналитику** и **генерацию с дополнением извлечённой информации (RAG)** для помощи тренерам и игрокам в волейболе.  
+Система отвечает на вопросы о технике, тактике и упражнениях, используя подготовленную базу знаний, а также предоставляет аналитику производительности на основе логов матчей.
 
-## ✨ Features
-- **RAG Chatbot** – Ask anything about volleyball training (e.g., “How to improve jump float serve?”) and get context‑aware answers using OpenAI + your knowledge base.
-- **Vector Search** – Embeddings from `sentence-transformers/all-MiniLM-L6-v2`, stored in FAISS for fast retrieval.
-- **Analytics Module** – Compute key performance indicators: attack efficiency, serve success rate, passing accuracy, etc.
-- **Interactive Dashboard** – Built with Streamlit: two tabs for Q&A and player stats visualisation.
+## ✨ Возможности
 
-## 🧠 How RAG Works in This Project
-1. Documents (text files in `data/knowledge/`) are split into chunks.
-2. Each chunk is embedded and stored in a FAISS index.
-3. User’s question is embedded and the top‑k relevant chunks are retrieved.
-4. Retrieved context + the question are sent to an LLM (OpenAI GPT‑3.5‑Turbo) to generate an answer.
-5. Answer is shown together with source references.
+- **RAG‑чат** – задавайте любые вопросы о волейбольных тренировках (например: «Как улучшить планирующую подачу в прыжке?») и получайте ответы с учётом контекста, используя OpenAI и вашу базу знаний.
+- **Векторный поиск** – эмбеддинги от `sentence-transformers/all-MiniLM-L6-v2`, хранящиеся в FAISS для быстрого поиска.
+- **Модуль аналитики** – расчёт ключевых показателей: эффективность атаки, процент успешных подач, точность приёма и т.д.
+- **Интерактивная панель** – построена на Streamlit: две вкладки для вопросов и визуализации статистики игроков.
 
-## 📦 Tech Stack
+## 🧠 Как работает RAG в этом проекте
+
+1. Документы (текстовые файлы в `data/knowledge/`) разбиваются на фрагменты (chunks).
+2. Каждый фрагмент преобразуется в эмбеддинг и сохраняется в индекс FAISS.
+3. Вопрос пользователя также преобразуется в эмбеддинг, и находятся top‑k наиболее релевантных фрагментов.
+4. Найденный контекст + вопрос отправляются в LLM (OpenAI GPT‑3.5‑Turbo) для генерации ответа.
+5. Ответ показывается вместе с источниками (ссылками на фрагменты).
+
+## 📦 Технологический стек
+
 - Python 3.9+
-- Streamlit – UI
-- OpenAI API – LLM (can be replaced with any OpenAI‑compatible endpoint)
-- Sentence‑Transformers – embeddings
-- FAISS – vector database
-- Pandas / Plotly – analytics and charts
+- Streamlit – интерфейс
+- OpenAI API – языковая модель (можно заменить на любую OpenAI‑совместимую)
+- Sentence‑Transformers – эмбеддинги
+- FAISS – векторная база данных
+- Pandas / Plotly – аналитика и графики
 
-## ⚙️ Setup
+## ⚙️ Установка и запуск
 
-### 1. Clone & install dependencies
+### 1. Склонируйте репозиторий и установите зависимости
+
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Set your OpenAI API key
+### 2. Укажите ваш API‑ключ OpenAI
 
-Create a `.env` file in the root directory:
+Создайте файл `.env` в корневой директории:
 
 ```
-OPENAI_API_KEY=your-key-here
+OPENAI_API_KEY=ваш-ключ-здесь
 ```
 
-Or set it as an environment variable.
+Или установите переменную окружения.
 
-### 3. Ingest knowledge base (build FAISS index)
+### 3. Импортируйте базу знаний (постройте индекс FAISS)
 
 ```
 python scripts/ingest_docs.py
 ```
 
-This will create a `faiss_index` folder with the vector store.
+Будет создана папка `faiss_index` с векторным хранилищем.
 
-### 4. Run the Streamlit app
+### 4. Запустите Streamlit‑приложение
 
 ```
 streamlit run app.py
 ```
 
-## 📁 Project Structure
+## 📁 Структура проекта
 
 ```
 .
-├── app.py                     # Main Streamlit dashboard
+├── app.py                     # Главная панель Streamlit
 ├── requirements.txt
 ├── .env.example
 ├── README.md
 ├── scripts/
-│   └── ingest_docs.py         # One‑time script to index knowledge
+│   └── ingest_docs.py         # Скрипт для индексации знаний
 ├── src/
 │   ├── rag/
 │   │   ├── embedding.py
@@ -77,32 +81,32 @@ streamlit run app.py
 │   └── knowledge_base/
 │       └── document_processor.py
 └── data/
-    ├── knowledge/             # Add your own .txt files here
+    ├── knowledge/             # Добавляйте свои .txt файлы сюда
     └── player_stats/
         └── sample_matches.csv
 ```
 
-## 📊 Example Questions for the RAG Assistant
+## 📊 Примеры вопросов для RAG‑ассистента
 
-- “What are the key phases of a volleyball spike?”
-- “How to run a 6‑2 offensive system?”
-- “Give me 3 drills to improve passing under pressure.”
+- «Каковы ключевые фазы нападающего удара в волейболе?»
+- «Как организовать систему 6‑2?»
+- «Назовите 3 упражнения для улучшения приёма в сложных условиях.»
 
-## 📈 Analytics Demo
+## 📈 Демонстрация аналитики
 
-Upload a CSV with columns: `player`, `action` (serve, attack, pass, block, etc.), `result` (success, error, etc.), `timestamp`.
-The system calculates:
+Загрузите CSV с колонками: `player` (игрок), `action` (подача, атака, приём, блок и т.д.), `result` (успех, ошибка и т.д.), `timestamp` (время).
+Система рассчитывает:
 
-- Attack efficiency = (kills - errors) / total attacks
-- Serve success rate
-- Passing rating (3‑point scale)
+- Эффективность атаки = (успешные атаки – ошибки) / всего атак
+- Процент успешных подач
+- Оценку приёма (по 3‑балльной шкале)
 
-## 🔧 Customisation
+## 🔧 Настройка
 
-- **Add more knowledge**: put any `.txt` file into `data/knowledge/` and re‑run `ingest_docs.py`.
-- **Switch LLM**: modify `src/rag/generator.py` to use a local model (e.g., HuggingFace pipeline) or a different API.
-- **Change embedding model**: edit `EMBEDDING_MODEL_NAME` in `src/rag/embedding.py`.
+- **Добавление знаний** – поместите любой `.txt` файл в `data/knowledge/` и повторно запустите `ingest_docs.py`.
+- **Смена LLM** – измените `src/rag/generator.py` для использования локальной модели (например, HuggingFace pipeline) или другого API.
+- **Смена модели эмбеддингов** – отредактируйте `EMBEDDING_MODEL_NAME` в `src/rag/embedding.py`.
 
-## 📝 License
+## 📝 Лицензия
 
-MIT – free for educational and research use.
+MIT – свободно для образовательных и исследовательских целей.
